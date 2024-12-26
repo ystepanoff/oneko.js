@@ -1,4 +1,10 @@
-// oneko.js: https://github.com/adryd325/oneko.js
+/**
+ * oneko.js: https://github.com/ystepnoff/oneko.js
+ * forked from https://github.com/adryd325/oneko.js
+ * This fork allows you to click on the cat to pause it
+ * (it will still be able to sleep and scratch itself or the
+ * surroundings though).
+ */
 
 (function oneko() {
     const isReducedMotion =
@@ -6,7 +12,10 @@
         window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
 
     if (isReducedMotion) return;
+
     const nekoEl = document.createElement("div");
+
+    let allowedToRun = true;
 
     let nekoPosX = 32;
     let nekoPosY = 32;
@@ -89,13 +98,13 @@
         nekoEl.style.width = "32px";
         nekoEl.style.height = "32px";
         nekoEl.style.position = "fixed";
-        nekoEl.style.pointerEvents = "none";
+        //nekoEl.style.pointerEvents = "none";
         nekoEl.style.imageRendering = "pixelated";
         nekoEl.style.left = `${nekoPosX - 16}px`;
         nekoEl.style.top = `${nekoPosY - 16}px`;
         nekoEl.style.zIndex = 2147483647;
 
-        let nekoFile = "./oneko.gif"
+        let nekoFile = "/images/oneko.gif"
         const curScript = document.currentScript
         if (curScript && curScript.dataset.cat) {
             nekoFile = curScript.dataset.cat
@@ -107,6 +116,10 @@
         document.addEventListener("mousemove", function (event) {
             mousePosX = event.clientX;
             mousePosY = event.clientY;
+        });
+
+        nekoEl.addEventListener("click", function () {
+            allowedToRun = !allowedToRun;
         });
 
         window.requestAnimationFrame(onAnimationFrame);
@@ -145,26 +158,19 @@
         // every ~ 20 seconds
         if (
             idleTime > 10 &&
-            Math.floor(Math.random() * 200) == 0 &&
+            Math.floor(Math.random() * 20) == 0 &&
             idleAnimation == null
         ) {
-            let avalibleIdleAnimations = ["sleeping", "scratchSelf"];
-            if (nekoPosX < 32) {
-                avalibleIdleAnimations.push("scratchWallW");
-            }
-            if (nekoPosY < 32) {
-                avalibleIdleAnimations.push("scratchWallN");
-            }
-            if (nekoPosX > window.innerWidth - 32) {
-                avalibleIdleAnimations.push("scratchWallE");
-            }
-            if (nekoPosY > window.innerHeight - 32) {
-                avalibleIdleAnimations.push("scratchWallS");
-            }
-            idleAnimation =
-                avalibleIdleAnimations[
-                    Math.floor(Math.random() * avalibleIdleAnimations.length)
-                    ];
+            let avalibleIdleAnimations = [
+                "sleeping",
+                "scratchSelf",
+                "scratchWallW",
+                "scratchWallN",
+                "scratchWallE",
+                "scratchWallS"
+            ];
+
+            idleAnimation = avalibleIdleAnimations[Math.floor(Math.random() * avalibleIdleAnimations.length)];
         }
 
         switch (idleAnimation) {
@@ -174,7 +180,7 @@
                     break;
                 }
                 setSprite("sleeping", Math.floor(idleAnimationFrame / 4));
-                if (idleAnimationFrame > 192) {
+                if (idleAnimationFrame > 96) {
                     resetIdleAnimation();
                 }
                 break;
@@ -201,7 +207,7 @@
         const diffY = nekoPosY - mousePosY;
         const distance = Math.sqrt(diffX ** 2 + diffY ** 2);
 
-        if (distance < nekoSpeed || distance < 48) {
+        if (distance < nekoSpeed || distance < 48 || !allowedToRun) {
             idle();
             return;
         }
