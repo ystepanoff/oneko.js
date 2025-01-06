@@ -8,8 +8,13 @@ first written in the 1980s for NEC PC-9801. This fork allows you to click on the
 pause it (it can still sleep and scratch itself or its surroundings, though).
 
 Usage: include
-```
-<script src="/path/to/oneko.js"></script>
+```HTML
+  <script id="onekoData" type="application/json">
+    {
+      "onekoGIF": "oneko.gif"
+    }
+  </script>
+  <script src="oneko.js"></script>
 ```
 in your HTML code.
 
