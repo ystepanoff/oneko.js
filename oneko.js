@@ -104,7 +104,14 @@
         nekoEl.style.top = `${nekoPosY - 16}px`;
         nekoEl.style.zIndex = 2147483647;
 
-        let nekoFile = "/images/oneko.gif"
+        let nekoFile = "oneko.gif";
+        let dataEl = document.getElementById("onekoData");
+        if (dataEl !== null) {
+            let nekoData = JSON.parse(dataEl.text);
+            if (typeof nekoData.onekoGIF !== "undefined") {
+                nekoFile = nekoData.onekoGIF;
+            }
+        }
         const curScript = document.currentScript
         if (curScript && curScript.dataset.cat) {
             nekoFile = curScript.dataset.cat
