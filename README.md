@@ -13,10 +13,10 @@ Usage: include
 ```HTML
   <script id="onekoData" type="application/json">
     {
-      "onekoGIF": "oneko.gif"
+      "onekoGIF": "/path/to/oneko.gif"
     }
   </script>
-  <script src="oneko.js"></script>
+  <script src="/path/to/oneko.js"></script>
 ```
 in your HTML code.
 
