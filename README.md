@@ -1,5 +1,7 @@
 # oneko.js
 
+![oneko](oneko.webp)
+
 Original author: Ariana @ https://adryd.com, https://github.com/adryd325/oneko.js
 
 This is a simple script that adds a cat that follows your mouse pointer around the screen. 
